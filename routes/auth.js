@@ -3,6 +3,14 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 const config = require('../config');
 
+
+
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 router.post('/login', (req, res, next) => {
   const {email, password} = req.body.userData;
 

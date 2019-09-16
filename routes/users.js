@@ -2,16 +2,20 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db');
 
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //POST for register user
 router.post('/register', function(req, res, next) {
-  var {firstName, lastName, email, password, isDeleted} = req.body.userData;
+  var {username, email, password} = req.body.userData;
 
   var dataToInsert ={
-    firstName,
-    lastName,
+    username,
     email,
     password,
-    isDeleted
   }
 
   
@@ -34,6 +38,10 @@ router.post('/register', function(req, res, next) {
   
   db.register(dataToInsert, handler);
 });
+
+
+
+
 
 
 module.exports = router;
