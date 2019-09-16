@@ -3,7 +3,11 @@ var MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');   
 
 var db;
-var collection;
+
+/*
+Database connection
+*/
+
 MongoClient.connect(config.MONG_URL, { useNewUrlParser: true }, function (err, database){
     assert.equal(null, err);
     db = database.db("login_demo");
@@ -19,20 +23,10 @@ MongoClient.connect(config.MONG_URL, { useNewUrlParser: true }, function (err, d
 
 
 module.exports = {
-
+    //Insert data
     register: (data, handler) => {
         db.collection('users').insertOne(data, (err, result) => {
             handler(err, result);
         })
-    },
-//     findUser: (data, handler) => {
-//         collection.findOne(data, (err, result) => {      
-//             handler(err, result);
-//         })
-//     },
-//     findAll: (handler) => {
-//         collection.find((err, result) => {
-//             handler(err, result);
-//         })
-//     }
+    }
  }

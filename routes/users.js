@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db');
 
-
+//POST for register user
 router.post('/register', function(req, res, next) {
   var {firstName, lastName, email, password, isDeleted} = req.body.userData;
 
@@ -14,9 +14,8 @@ router.post('/register', function(req, res, next) {
     isDeleted
   }
 
-
+  
   const handler = (err, result) =>   {
-    console.log(vaca);
     if(!err){
       res.json({
         success: true,
@@ -32,6 +31,7 @@ router.post('/register', function(req, res, next) {
       });
     }
   }
+  
   db.register(dataToInsert, handler);
 });
 
