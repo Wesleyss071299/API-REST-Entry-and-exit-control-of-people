@@ -28,5 +28,10 @@ module.exports = {
         db.collection('users').insertOne(data, (err, result) => {
             handler(err, result);
         })
+    },
+    findUser :(data, handler) =>{
+        db.collection('users').findOne(data,(err, result)=>{
+            handler(err, result); 
+        })
     }
  }
