@@ -9,7 +9,7 @@ var db = require('../db');
 
 router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authentication");
   next();
 });
 
@@ -27,7 +27,7 @@ router.post('/login', (req, res, next) => {
   }else{
 
     const handler = (err, result) =>{
-        if(!err && bcrypt.compareSync(password, result.password)){
+        if(!err && result!==null && bcrypt.compareSync(password, result.password)){
           let tokenData = {
             name: result.name,
             email: result.email
@@ -42,7 +42,7 @@ router.post('/login', (req, res, next) => {
         }else{
           res.status(401).json({
             succeess: false,
-            message: err
+            message: "user does not exist"
           });
         }
     }
@@ -50,6 +50,24 @@ router.post('/login', (req, res, next) => {
 
   }
 });
+
+router.get('/verifytoken', (req, res, next) =>{
+  let token = req.headers['authorization'];
+  console.log(token);
+  jwt.verify(token, config.JWT_KEY, (err, decode)=>{
+    if(!err){
+      res.json({
+        succeess: true,
+        message: "token is valid"
+      })
+    }else{
+      res.status(401).json({
+        succeess: false,
+        error: err  
+      })
+    }
+  })
+})
   
 
 module.exports = router;
