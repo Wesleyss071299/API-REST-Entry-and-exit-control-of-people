@@ -14,7 +14,7 @@ router.use(function(req, res, next) {
 });
 
 
-
+//Login and token generator method
 router.post('/login', (req, res, next) => {
   console.log(req.body.userData)
   const {email, password} = req.body.userData;
@@ -51,9 +51,9 @@ router.post('/login', (req, res, next) => {
   }
 });
 
+//Checking token 
 router.get('/verifytoken', (req, res, next) =>{
   let token = req.headers['authorization'];
-  console.log(token);
   jwt.verify(token, config.JWT_KEY, (err, decode)=>{
     if(!err){
       res.json({
