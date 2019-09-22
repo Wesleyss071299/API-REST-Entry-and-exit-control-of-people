@@ -7,9 +7,12 @@ var db = require('../db');
 
 
 
+
+
+
 router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authentication");
+  res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
 
@@ -35,13 +38,13 @@ router.post('/login', (req, res, next) => {
   
           let generatedtoken = jwt.sign(tokenData, config.JWT_KEY, {expiresIn: '1m'});
           res.json({
-            succeess:true,
+            success:true,
             token: generatedtoken
           });
-
+ 
         }else{
           res.status(401).json({
-            succeess: false,
+            success: false,
             message: "user does not exist"
           });
         }
@@ -53,16 +56,17 @@ router.post('/login', (req, res, next) => {
 
 //Checking token 
 router.get('/verifytoken', (req, res, next) =>{
-  let token = req.headers['authorization'];
+  let token = req.headers['authorization'].split(' ')[1]; 
   jwt.verify(token, config.JWT_KEY, (err, decode)=>{
     if(!err){
       res.json({
-        succeess: true,
+        success: true,
         message: "token is valid"
       })
     }else{
+     
       res.status(401).json({
-        succeess: false,
+        success: false,
         error: err  
       })
     }
